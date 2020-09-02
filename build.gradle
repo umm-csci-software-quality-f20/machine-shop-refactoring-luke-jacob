@@ -1,0 +1,45 @@
+
+plugins {
+    id 'java'
+    id 'jacoco' // Provides test coverage information
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['tests/unitTests', 'tests/acceptanceTests', 'tests/properties']
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'com.pholser:junit-quickcheck-core:0.9.4'
+    testImplementation 'com.pholser:junit-quickcheck-generators:0.9.4'
+}
+
+run {
+    standardInput = System.in
+}
+
+// JaCoCo provides JUnit test coverage information
+test {
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+    dependsOn test
+}
+
+mainClassName = 'applications.MachineShopSimulator'
