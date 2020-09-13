@@ -29,8 +29,7 @@ public class MachineShopSimulator {
             simulationResults.setJobCompletionData(theJob.getId(), timeNow, timeNow - theJob.getLength());
             return false;
         } else {// theJob has a next task
-                // get machine for next task
-            int p = ((Task) theJob.getTaskQ().getFrontElement()).getMachine();
+            int p = getMachineForNextTask(theJob);
             // put on machine p's wait queue
             machine[p].getJobQ().put(theJob);
             theJob.setArrivalTime(timeNow);
@@ -40,6 +39,11 @@ public class MachineShopSimulator {
             }
             return true;
         }
+    }
+
+    private int getMachineForNextTask(Job theJob) {
+        int p = ((Task) theJob.getTaskQ().getFrontElement()).getMachine();
+        return p;
     }
 
     /**
