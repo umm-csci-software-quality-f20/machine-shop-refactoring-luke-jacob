@@ -50,4 +50,8 @@ class Job {
         return id;
     }
 
+	void putTaskOnMachineQueue(MachineShopSimulator machineShopSimulator, int p) {
+	    machineShopSimulator.machine[p].getJobQ().put(this);
+	}
+
 }

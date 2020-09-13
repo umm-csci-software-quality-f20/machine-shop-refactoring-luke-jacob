@@ -15,7 +15,7 @@ public class MachineShopSimulator {
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
     private EventList eList; // pointer to event list
-    private Machine[] machine; // array of machines
+    Machine[] machine; // array of machines
     private int largeTime; // all machines finish before this
 
     // methods
@@ -25,13 +25,12 @@ public class MachineShopSimulator {
      * @return false iff no next task
      */
     boolean moveToNextMachine(Job theJob, SimulationResults simulationResults) {
-        if (theJob.getTaskQ().isEmpty()) {// no next task
+        if (theJob.getTaskQ().isEmpty()) {// the job has no next task; return false
             simulationResults.setJobCompletionData(theJob.getId(), timeNow, timeNow - theJob.getLength());
             return false;
         } else {// theJob has a next task
             int p = getMachineForNextTask(theJob);
-            // put on machine p's wait queue
-            machine[p].getJobQ().put(theJob);
+            theJob.putTaskOnMachineQueue(this, p);
             theJob.setArrivalTime(timeNow);
             // if p idle, schedule immediately
             if (eList.nextEventTime(p) == largeTime) {// machine is idle
@@ -102,7 +101,7 @@ public class MachineShopSimulator {
                     firstMachine = theMachine; // job's first machine
                 theJob.addTask(theMachine, theTaskTime); // add to
             } // task queue
-            machine[firstMachine].getJobQ().put(theJob);
+            theJob.putTaskOnMachineQueue(this, firstMachine);
         }
     }
 
