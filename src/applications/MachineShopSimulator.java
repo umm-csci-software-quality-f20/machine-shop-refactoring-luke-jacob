@@ -96,14 +96,22 @@ public class MachineShopSimulator {
             // create the job
             theJob = new Job(i);
             for (int j = 1; j <= tasks; j++) {
-                int theMachine = specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+1];
-                int theTaskTime = specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+2];
+                int theMachine = getMachineNumber(specification, i, j);
+                int theTaskTime = getTaskTime(specification, i, j);
                 if (j == 1)
                     firstMachine = theMachine; // job's first machine
                 theJob.addTask(theMachine, theTaskTime); // add to
             } // task queue
             machine[firstMachine].getJobQ().put(theJob);
         }
+    }
+
+    private int getTaskTime(SimulationSpecification specification, int i, int j) {
+        return specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+2];
+    }
+
+    private int getMachineNumber(SimulationSpecification specification, int i, int j) {
+        return specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+1];
     }
 
     private void createEventAndMachineQueues(SimulationSpecification specification) {
