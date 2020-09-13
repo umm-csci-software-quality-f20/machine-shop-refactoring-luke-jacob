@@ -90,7 +90,7 @@ public class MachineShopSimulator {
         // input the jobs
         Job theJob;
         for (int i = 1; i <= specification.getNumJobs(); i++) {
-            int tasks = specification.getJobSpecifications(i).getNumTasks();
+            int tasks = Task.getNumTasks(specification, i);
             int firstMachine = 0; // machine for first task
 
             // create the job
