@@ -50,4 +50,43 @@ class Machine {
     public void setActiveJob(Job activeJob) {
         this.activeJob = activeJob;
     }
+
+    /**
+     * change the state of theMachine
+     * @return last job run on this machine
+     */
+    public Job changeState(int num, EventList eList, int now) {
+        Job lastJob;
+        if (getActiveJob() == null) {
+            lastJob = null;
+            if (getJobQ().isEmpty())
+                eList.setFinishTime(num, Integer.MAX_VALUE);
+            else {
+                setActiveJob((Job) getJobQ().remove());
+                setTotalWait(getTotalWait() + now
+                        - getActiveJob().getArrivalTime());
+                setNumTasks(getNumTasks() + 1);
+                int t = getActiveJob().removeNextTask();
+                eList.setFinishTime(num,  now + t);
+            }
+        }
+        else {
+            lastJob = getActiveJob();
+            setActiveJob(null);
+            eList.setFinishTime(num, now
+                    + getChangeTime());
+        }
+        return lastJob;
+    }
+
+    //Sets the total wait time and number of tasks for the simulation results
+    public static void setTotalAndNumTasksPerMachine(SimulationResults simulationResults, int[] total, Machine[] m) {
+        int[] numTask = new int[total.length];
+        for (int i=1; i<=total.length-1; ++i) {
+            total[i] = m[i].getTotalWait();
+            numTask[i] = m[i].getNumTasks();
+        }
+        simulationResults.setTotalWaitTimePerMachine(total);
+        simulationResults.setNumTasksPerMachine(numTask);
+    }
 }
