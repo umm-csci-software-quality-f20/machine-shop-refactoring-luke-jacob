@@ -109,7 +109,7 @@ public class MachineShopSimulator {
     void outputStatistics(SimulationResults simulationResults) {
         simulationResults.setFinishTime(timeNow);
         simulationResults.setNumMachines(numMachines);
-        machine[0].setTotalAndNumTasksPerMachine(simulationResults, new int[numMachines + 1], machine);
+        Machine.setTotalAndNumTasksPerMachine(simulationResults, new int[numMachines + 1], machine);
     }
 
     /**

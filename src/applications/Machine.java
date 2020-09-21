@@ -80,7 +80,7 @@ class Machine {
     }
 
     //Sets the total wait time and number of tasks for the simulation results
-    public void setTotalAndNumTasksPerMachine(SimulationResults simulationResults, int[] total, Machine[] m) {
+    public static void setTotalAndNumTasksPerMachine(SimulationResults simulationResults, int[] total, Machine[] m) {
         int[] numTask = new int[total.length];
         for (int i=1; i<=total.length-1; ++i) {
             total[i] = m[i].getTotalWait();
