@@ -189,6 +189,10 @@ public class MachineShopSimulator {
         return simulationResults;
     }
 
+    /** Getter method for the array of machines that is used in MSS */
+    public Machine[] getMachineArray() {
+        return machine;
+    }
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
         /*
