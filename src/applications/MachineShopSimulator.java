@@ -32,7 +32,7 @@ public class MachineShopSimulator {
             machine[p].getJobQ().put(theJob);
             theJob.setArrivalTime(timeNow);
             if (eList.nextEventTime(p) == largeTime) {
-                Machine.changeState(p, machine[p], eList, timeNow);
+                machine[p].changeState(p, eList, timeNow);
             }
             return true;
         }
@@ -85,7 +85,7 @@ public class MachineShopSimulator {
         setUpJobs(specification);
 
         for (int p = 1; p <= numMachines; p++)
-            Machine.changeState(p, machine[p], eList, timeNow);
+            machine[p].changeState(p, eList, timeNow);
     }
 
     /**
@@ -96,7 +96,7 @@ public class MachineShopSimulator {
         while (numJobs > 0) {
             int nextToFinish = eList.nextEventMachine();
             timeNow = eList.nextEventTime(nextToFinish);
-            Job theJob = Machine.changeState(nextToFinish, machine[nextToFinish], eList, timeNow);
+            Job theJob = machine[nextToFinish].changeState(nextToFinish, eList, timeNow);
             if (theJob != null && !moveToNextMachine(theJob, simulationResults))
                 numJobs--;
         }
@@ -109,7 +109,7 @@ public class MachineShopSimulator {
     void outputStatistics(SimulationResults simulationResults) {
         simulationResults.setFinishTime(timeNow);
         simulationResults.setNumMachines(numMachines);
-        Machine.setTotalAndNumTasksPerMachine(simulationResults, new int[numMachines + 1], machine);
+        machine[0].setTotalAndNumTasksPerMachine(simulationResults, new int[numMachines + 1], machine);
     }
 
     /**

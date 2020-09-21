@@ -1,7 +1,6 @@
 package applications;
 
 import dataStructures.LinkedQueue;
-import jdk.jfr.Event;
 
 class Machine {
     // data members
@@ -56,32 +55,32 @@ class Machine {
      * change the state of theMachine
      * @return last job run on this machine
      */
-    public static Job changeState(int num, Machine theMachine, EventList eList, int now) {
+    public Job changeState(int num, EventList eList, int now) {
         Job lastJob;
-        if (theMachine.getActiveJob() == null) {
+        if (getActiveJob() == null) {
             lastJob = null;
-            if (theMachine.getJobQ().isEmpty())
+            if (getJobQ().isEmpty())
                 eList.setFinishTime(num, Integer.MAX_VALUE);
             else {
-                theMachine.setActiveJob((Job) theMachine.getJobQ().remove());
-                theMachine.setTotalWait(theMachine.getTotalWait() + now
-                        - theMachine.getActiveJob().getArrivalTime());
-                theMachine.setNumTasks(theMachine.getNumTasks() + 1);
-                int t = theMachine.getActiveJob().removeNextTask();
+                setActiveJob((Job) getJobQ().remove());
+                setTotalWait(getTotalWait() + now
+                        - getActiveJob().getArrivalTime());
+                setNumTasks(getNumTasks() + 1);
+                int t = getActiveJob().removeNextTask();
                 eList.setFinishTime(num,  now + t);
             }
         }
         else {
-            lastJob = theMachine.getActiveJob();
-            theMachine.setActiveJob(null);
+            lastJob = getActiveJob();
+            setActiveJob(null);
             eList.setFinishTime(num, now
-                    + theMachine.getChangeTime());
+                    + getChangeTime());
         }
         return lastJob;
     }
 
     //Sets the total wait time and number of tasks for the simulation results
-    public static void setTotalAndNumTasksPerMachine(SimulationResults simulationResults, int[] total, Machine[] m) {
+    public void setTotalAndNumTasksPerMachine(SimulationResults simulationResults, int[] total, Machine[] m) {
         int[] numTask = new int[total.length];
         for (int i=1; i<=total.length-1; ++i) {
             total[i] = m[i].getTotalWait();
