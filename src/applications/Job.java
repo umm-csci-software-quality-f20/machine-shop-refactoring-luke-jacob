@@ -51,7 +51,8 @@ class Job {
     }
 
 	void putTaskOnMachineQueue(MachineShopSimulator machineShopSimulator, int p) {
-	    machineShopSimulator.machine[p].getJobQ().put(this);
+        Machine[] machine = machineShopSimulator.getMachineArray();
+        machine[p].getJobQ().put(this);
 	}
 
 }
