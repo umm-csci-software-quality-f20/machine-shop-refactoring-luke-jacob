@@ -30,7 +30,7 @@ public class MachineShopSimulator {
             return false;
         } else {// theJob has a next task
             int p = getMachineForNextTask(theJob);
-            theJob.putTaskOnMachineQueue(this, p);
+            theJob.putJobOnMachineQueue(this, p);
             theJob.setArrivalTime(timeNow);
             // if p idle, schedule immediately
             if (eList.nextEventTime(p) == largeTime) {// machine is idle
