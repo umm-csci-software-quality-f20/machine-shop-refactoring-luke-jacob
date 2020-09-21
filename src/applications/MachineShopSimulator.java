@@ -15,7 +15,7 @@ public class MachineShopSimulator {
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
     private EventList eList; // pointer to event list
-    Machine[] machine; // array of machines
+    private Machine[] machine; // array of machines
     private int largeTime; // all machines finish before this
 
     // methods
