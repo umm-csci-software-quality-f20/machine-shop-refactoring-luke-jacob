@@ -50,4 +50,9 @@ class Job {
         return id;
     }
 
+	void putJobOnMachineQueue(MachineShopSimulator machineShopSimulator, int p) {
+        Machine[] machine = machineShopSimulator.getMachineArray();
+        machine[p].getJobQ().put(this);
+	}
+
 }

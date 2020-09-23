@@ -19,4 +19,7 @@ class Task {
     public int getTime() {
         return time;
     }
+    public static int getNumTasks(SimulationSpecification specification, int i) {
+        return specification.getJobSpecifications(i).getNumTasks();
+    }
 }
