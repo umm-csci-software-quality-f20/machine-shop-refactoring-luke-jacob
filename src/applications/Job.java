@@ -65,9 +65,9 @@ class Job {
         return time;
     }
 
-	void putJobOnMachineQueue(MachineShopSimulator machineShopSimulator, int p) {
+	void putJobOnMachineQueue(MachineShopSimulator machineShopSimulator, int index) {
         Machine[] machine = machineShopSimulator.getMachineArray();
-        machine[p].getJobQ().put(this);
+        machine[index].getJobQ().put(this);
 	}
 
     public static int getNumTasks(SimulationSpecification specification, int i) {
