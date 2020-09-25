@@ -38,8 +38,8 @@ public class MachineShopSimulator {
     }
 
     private int getMachineForNextTask(Job theJob) {
-        int p = ((Job) theJob.getTaskQ().getFrontElement()).getMachine();
-        return p;
+        int machineNum = ((Job) theJob.getTaskQ().getFrontElement()).getMachine();
+        return machineNum;
     }
 
     /**
@@ -49,8 +49,8 @@ public class MachineShopSimulator {
      */
 
     private void setMachineChangeOverTimes(SimulationSpecification specification) {
-        for (int i = 1; i<=specification.getNumMachines(); ++i) {
-            machines[i].setChangeTime(specification.getChangeOverTimes(i));
+        for (int index = 1; index<=specification.getNumMachines(); ++index) {
+            machines[index].setChangeTime(specification.getChangeOverTimes(index));
         }
     }
 
@@ -60,15 +60,15 @@ public class MachineShopSimulator {
      */
     private void setUpJobs(SimulationSpecification specification) {
         Job theJob;
-        for (int i = 1; i <= specification.getNumJobs(); i++) {
-            int tasks = Job.getNumTasks(specification, i);
+        for (int currentJob = 1; currentJob <= specification.getNumJobs(); currentJob++) {
+            int tasks = Job.getNumTasks(specification, currentJob);
             int firstMachine = 0; // machine for first task
 
-            theJob = new Job(i);
-            for (int j = 1; j <= tasks; j++) {
-                int theMachine = getMachineNumber(specification, i, j);
-                int theTaskTime = getTaskTime(specification, i, j);
-                if (j == 1)
+            theJob = new Job(currentJob);
+            for (int currentTask = 1; currentTask <= tasks; currentTask++) {
+                int theMachine = getMachineNumber(specification, currentJob, currentTask);
+                int theTaskTime = getTaskTime(specification, currentJob, currentTask);
+                if (currentTask == 1)
                     firstMachine = theMachine; // job's first machine
                 theJob.addTask(theMachine, theTaskTime); // add to
             } // task queue
@@ -87,8 +87,8 @@ public class MachineShopSimulator {
     private void createEventAndMachineQueues(SimulationSpecification specification) {
         eList = new EventList(specification.getNumMachines(), finishTime);
         machines = new Machine[specification.getNumMachines() + 1];
-        for (int i = 1; i <= specification.getNumMachines(); i++)
-            machines[i] = new Machine();
+        for (int currentMachine = 1; currentMachine <= specification.getNumMachines(); currentMachine++)
+            machines[currentMachine] = new Machine();
     }
 
     /**
@@ -102,8 +102,8 @@ public class MachineShopSimulator {
         setMachineChangeOverTimes(specification);
         setUpJobs(specification);
 
-        for (int p = 1; p <= numMachines; p++)
-            machines[p].changeState(p, eList, timeNow);
+        for (int theMachine = 1; theMachine <= numMachines; theMachine++)
+            machines[theMachine].changeState(theMachine, eList, timeNow);
     }
 
     /**
