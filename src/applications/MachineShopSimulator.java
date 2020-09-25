@@ -44,7 +44,6 @@ public class MachineShopSimulator {
 
     /**
      * change the state of theMachine
-     * 
      * @return last job run on this machine
      */
 
@@ -62,16 +61,15 @@ public class MachineShopSimulator {
         Job theJob;
         for (int currentJob = 1; currentJob <= specification.getNumJobs(); currentJob++) {
             int tasks = Job.getNumTasks(specification, currentJob);
-            int firstMachine = 0; // machine for first task
-
+            int firstMachine = 0;
             theJob = new Job(currentJob);
             for (int currentTask = 1; currentTask <= tasks; currentTask++) {
                 int theMachine = getMachineNumber(specification, currentJob, currentTask);
                 int theTaskTime = getTaskTime(specification, currentJob, currentTask);
                 if (currentTask == 1)
-                    firstMachine = theMachine; // job's first machine
-                theJob.addTask(theMachine, theTaskTime); // add to
-            } // task queue
+                    firstMachine = theMachine;
+                theJob.addTask(theMachine, theTaskTime);
+            }
             theJob.putJobOnMachineQueue(this, firstMachine);
         }
     }
@@ -149,6 +147,7 @@ public class MachineShopSimulator {
     public Machine[] getMachineArray() {
         return machines;
     }
+
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
         final SpecificationReader specificationReader = new SpecificationReader();
