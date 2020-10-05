@@ -177,6 +177,12 @@ public class MachineShopSimulator {
     public Machine[] getMachineArray() {
         return machine;
     }
+    /** Getter method for returning a single machine from the machine array.
+     *  This is working to protect encapsulation of the array.
+     */
+    public Machine getMachine(int p) {
+        return machine[p];
+    }
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
         final SpecificationReader specificationReader = new SpecificationReader();
