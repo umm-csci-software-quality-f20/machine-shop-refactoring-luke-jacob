@@ -83,11 +83,23 @@ public class MachineShopSimulator {
             theJob.putJobOnMachineQueue(this, firstMachine);
         }
     }
-
+    /**
+     * get task time for setting up jobs
+     * @param specification
+     * @param i
+     * @param j
+     * @return
+     */
     private int getTaskTime(SimulationSpecification specification, int i, int j) {
         return specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+2];
     }
-
+    /**
+     * get machine number for setting up jobs
+     * @param specification
+     * @param i
+     * @param j
+     * @return
+     */
     private int getMachineNumber(SimulationSpecification specification, int i, int j) {
         return specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+1];
     }

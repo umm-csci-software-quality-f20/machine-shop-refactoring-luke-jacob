@@ -49,7 +49,11 @@ class Job {
     public int getId() {
         return id;
     }
-
+    /**
+     * put the next job on the machine queue.
+     * @param machineShopSimulator
+     * @param p // the machine to get
+     */
 	void putJobOnMachineQueue(MachineShopSimulator machineShopSimulator, int p) {
         Machine machine = machineShopSimulator.getMachine(p);
         machine.getJobQ().put(this);
@@ -59,6 +63,9 @@ class Job {
 	 * move theJob to machine for its next task
 	 * @param machineShopSimulator TODO
 	 * @param simulationResults TODO
+     * @param timeNow
+     * @param eList
+     * @param largeTime
 	 * @return false if no next task, true if has next task.
 	 */
 	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults, int timeNow, EventList eList, int largeTime) {
