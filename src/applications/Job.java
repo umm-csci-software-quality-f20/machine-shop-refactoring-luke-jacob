@@ -49,10 +49,38 @@ class Job {
     public int getId() {
         return id;
     }
-
+    /**
+     * put the next job on the machine queue.
+     * @param machineShopSimulator
+     * @param p // the machine to get
+     */
 	void putJobOnMachineQueue(MachineShopSimulator machineShopSimulator, int p) {
         Machine machine = machineShopSimulator.getMachine(p);
         machine.getJobQ().put(this);
+	}
+
+	/**
+	 * move theJob to machine for its next task
+	 * @param machineShopSimulator TODO
+	 * @param simulationResults TODO
+     * @param timeNow
+     * @param eList
+     * @param largeTime
+	 * @return false if no next task, true if has next task.
+	 */
+	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults, int timeNow, EventList eList, int largeTime) {
+	    if (getTaskQ().isEmpty()) {// the job has no next task; return false
+	        simulationResults.setJobCompletionData(getId(), timeNow, timeNow - getLength());
+	        return false;
+	    } else {// theJob has a next task
+	        int p = machineShopSimulator.getMachineForNextTask(this);
+	        putJobOnMachineQueue(machineShopSimulator, p);
+	        setArrivalTime(timeNow);
+	        if (eList.nextEventTime(p) == largeTime) {
+	            machineShopSimulator.getMachine(p).changeState(p, eList, timeNow);
+	        }
+	        return true;
+	    }
 	}
 
 }

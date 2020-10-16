@@ -17,27 +17,7 @@ public class MachineShopSimulator {
     private Machine[] machine; // array of machines
     private int largeTime; // all machines finish before this
 
-    // methods
-    /**
-     * move theJob to machine for its next task
-     * @return false if no next task
-     */
-    boolean moveToNextMachine(Job theJob, SimulationResults simulationResults) {
-        if (theJob.getTaskQ().isEmpty()) {// the job has no next task; return false
-            simulationResults.setJobCompletionData(theJob.getId(), timeNow, timeNow - theJob.getLength());
-            return false;
-        } else {// theJob has a next task
-            int p = getMachineForNextTask(theJob);
-            theJob.putJobOnMachineQueue(this, p);
-            theJob.setArrivalTime(timeNow);
-            if (eList.nextEventTime(p) == largeTime) {
-                machine[p].changeState(p, eList, timeNow);
-            }
-            return true;
-        }
-    }
-
-    private int getMachineForNextTask(Job theJob) {
+    int getMachineForNextTask(Job theJob) {
         int p = ((Task) theJob.getTaskQ().getFrontElement()).getMachine();
         return p;
     }
@@ -103,11 +83,23 @@ public class MachineShopSimulator {
             theJob.putJobOnMachineQueue(this, firstMachine);
         }
     }
-
+    /**
+     * get task time for setting up jobs
+     * @param specification
+     * @param i
+     * @param j
+     * @return
+     */
     private int getTaskTime(SimulationSpecification specification, int i, int j) {
         return specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+2];
     }
-
+    /**
+     * get machine number for setting up jobs
+     * @param specification
+     * @param i
+     * @param j
+     * @return
+     */
     private int getMachineNumber(SimulationSpecification specification, int i, int j) {
         return specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+1];
     }
@@ -143,7 +135,7 @@ public class MachineShopSimulator {
             int nextToFinish = eList.nextEventMachine();
             timeNow = eList.nextEventTime(nextToFinish);
             Job theJob = machine[nextToFinish].changeState(nextToFinish, eList, timeNow);
-            if (theJob != null && !moveToNextMachine(theJob, simulationResults))
+            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults, timeNow, eList, largeTime))
                 numJobs--;
         }
     }
