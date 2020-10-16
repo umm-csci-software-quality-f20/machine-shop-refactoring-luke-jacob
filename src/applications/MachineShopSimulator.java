@@ -10,34 +10,14 @@ public class MachineShopSimulator {
     public static final String BAD_MACHINE_NUMBER_OR_TASK_TIME = "bad machine number or task time";
 
     // data members of MachineShopSimulator
-    private int timeNow; // current time
+    int timeNow; // current time
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
-    private EventList eList; // pointer to event list
-    private Machine[] machine; // array of machines
-    private int largeTime; // all machines finish before this
+    EventList eList; // pointer to event list
+    Machine[] machine; // array of machines
+    int largeTime; // all machines finish before this
 
-    // methods
-    /**
-     * move theJob to machine for its next task
-     * @return false if no next task
-     */
-    boolean moveToNextMachine(Job theJob, SimulationResults simulationResults) {
-        if (theJob.getTaskQ().isEmpty()) {// the job has no next task; return false
-            simulationResults.setJobCompletionData(theJob.getId(), timeNow, timeNow - theJob.getLength());
-            return false;
-        } else {// theJob has a next task
-            int p = getMachineForNextTask(theJob);
-            theJob.putJobOnMachineQueue(this, p);
-            theJob.setArrivalTime(timeNow);
-            if (eList.nextEventTime(p) == largeTime) {
-                machine[p].changeState(p, eList, timeNow);
-            }
-            return true;
-        }
-    }
-
-    private int getMachineForNextTask(Job theJob) {
+    int getMachineForNextTask(Job theJob) {
         int p = ((Task) theJob.getTaskQ().getFrontElement()).getMachine();
         return p;
     }
@@ -143,7 +123,7 @@ public class MachineShopSimulator {
             int nextToFinish = eList.nextEventMachine();
             timeNow = eList.nextEventTime(nextToFinish);
             Job theJob = machine[nextToFinish].changeState(nextToFinish, eList, timeNow);
-            if (theJob != null && !moveToNextMachine(theJob, simulationResults))
+            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults))
                 numJobs--;
         }
     }
