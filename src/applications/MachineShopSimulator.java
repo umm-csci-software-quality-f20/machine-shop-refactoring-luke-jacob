@@ -10,12 +10,12 @@ public class MachineShopSimulator {
     public static final String BAD_MACHINE_NUMBER_OR_TASK_TIME = "bad machine number or task time";
 
     // data members of MachineShopSimulator
-    int timeNow; // current time
+    private int timeNow; // current time
     private int numMachines; // number of machines
     private int numJobs; // number of jobs
-    EventList eList; // pointer to event list
-    Machine[] machine; // array of machines
-    int largeTime; // all machines finish before this
+    private EventList eList; // pointer to event list
+    private Machine[] machine; // array of machines
+    private int largeTime; // all machines finish before this
 
     int getMachineForNextTask(Job theJob) {
         int p = ((Task) theJob.getTaskQ().getFrontElement()).getMachine();
@@ -123,7 +123,7 @@ public class MachineShopSimulator {
             int nextToFinish = eList.nextEventMachine();
             timeNow = eList.nextEventTime(nextToFinish);
             Job theJob = machine[nextToFinish].changeState(nextToFinish, eList, timeNow);
-            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults))
+            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults, timeNow, eList, largeTime))
                 numJobs--;
         }
     }

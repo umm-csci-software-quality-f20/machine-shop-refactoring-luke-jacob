@@ -61,16 +61,16 @@ class Job {
 	 * @param simulationResults TODO
 	 * @return false if no next task, true if has next task.
 	 */
-	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults) {
+	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults, int timeNow, EventList eList, int largeTime) {
 	    if (getTaskQ().isEmpty()) {// the job has no next task; return false
-	        simulationResults.setJobCompletionData(getId(), machineShopSimulator.timeNow, machineShopSimulator.timeNow - getLength());
+	        simulationResults.setJobCompletionData(getId(), timeNow, timeNow - getLength());
 	        return false;
 	    } else {// theJob has a next task
 	        int p = machineShopSimulator.getMachineForNextTask(this);
 	        putJobOnMachineQueue(machineShopSimulator, p);
-	        setArrivalTime(machineShopSimulator.timeNow);
-	        if (machineShopSimulator.eList.nextEventTime(p) == machineShopSimulator.largeTime) {
-	            machineShopSimulator.machine[p].changeState(p, machineShopSimulator.eList, machineShopSimulator.timeNow);
+	        setArrivalTime(timeNow);
+	        if (eList.nextEventTime(p) == largeTime) {
+	            machineShopSimulator.getMachine(p).changeState(p, eList, timeNow);
 	        }
 	        return true;
 	    }
