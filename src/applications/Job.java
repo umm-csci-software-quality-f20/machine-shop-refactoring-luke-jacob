@@ -61,23 +61,22 @@ class Job {
 
 	/**
 	 * move theJob to machine for its next task
-	 * @param machineShopSimulator TODO
-	 * @param simulationResults TODO
-     * @param timeNow
+	 * @param machineShopSimulator
+	 * @param simulationResults
      * @param eList
-     * @param largeTime
 	 * @return false if no next task, true if has next task.
 	 */
-	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults, int timeNow, EventList eList, int largeTime) {
+	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults, EventList eList) {
 	    if (getTaskQ().isEmpty()) {// the job has no next task; return false
-	        simulationResults.setJobCompletionData(getId(), timeNow, timeNow - getLength());
+            simulationResults.setJobCompletionData(getId(), machineShopSimulator.getTimeNow(),
+             machineShopSimulator.getTimeNow() - getLength());
 	        return false;
 	    } else {// theJob has a next task
 	        int p = machineShopSimulator.getMachineForNextTask(this);
 	        putJobOnMachineQueue(machineShopSimulator, p);
-	        setArrivalTime(timeNow);
-	        if (eList.nextEventTime(p) == largeTime) {
-	            machineShopSimulator.getMachine(p).changeState(p, eList, timeNow);
+	        setArrivalTime(machineShopSimulator.getTimeNow());
+	        if (eList.nextEventTime(p) == machineShopSimulator.getLargeTime()) {
+	            machineShopSimulator.getMachine(p).changeState(p, eList, machineShopSimulator.getTimeNow());
 	        }
 	        return true;
 	    }
