@@ -135,7 +135,7 @@ public class MachineShopSimulator {
             int nextToFinish = eList.nextEventMachine();
             timeNow = eList.nextEventTime(nextToFinish);
             Job theJob = machine[nextToFinish].changeState(nextToFinish, eList, timeNow);
-            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults, timeNow, eList, largeTime))
+            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults, eList))
                 numJobs--;
         }
     }
@@ -174,6 +174,20 @@ public class MachineShopSimulator {
      */
     public Machine getMachine(int p) {
         return machine[p];
+    }
+    /**
+     * get the current time.
+     * @return timeNow
+     */
+    public int getTimeNow(){
+        return timeNow;
+    }
+    /**
+     * get the large time from the MSS class.
+     * @return
+     */
+    public int getLargeTime(){
+        return largeTime;
     }
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
