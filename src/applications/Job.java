@@ -8,6 +8,8 @@ class Job {
     private int length; // sum of scheduled task times
     private int arrivalTime; // arrival time at current queue
     private int id; // job identifier
+    private int machine; // the machine doing the task
+    private int time; //the time to do the task
 
     // constructor
     Job(int theId) {
@@ -16,16 +18,21 @@ class Job {
         // length and arrivalTime have default value 0
     }
 
+    Job(int theMachine, int theTime){
+        machine = theMachine;
+        time = theTime;
+    }
+
     // other methods
     public void addTask(int theMachine, int theTime) {
-        getTaskQ().put(new Task(theMachine, theTime));
+        getTaskQ().put(new Job(theMachine, theTime));
     }
 
     /**
      * remove next task of job and return its time also update length
      */
     public int removeNextTask() {
-        int theTime = ((Task) getTaskQ().remove()).getTime();
+        int theTime = ((Job) getTaskQ().remove()).getTime();
         length = getLength() + theTime;
         return theTime;
     }
@@ -53,11 +60,20 @@ class Job {
      * put the next job on the machine queue.
      * @param machineShopSimulator
      * @param p // the machine to get
+     * @return
      */
 	void putJobOnMachineQueue(MachineShopSimulator machineShopSimulator, int p) {
         Machine machine = machineShopSimulator.getMachine(p);
         machine.getJobQ().put(this);
-	}
+    }
+
+    public int getMachine() {
+        return machine;
+    }
+
+    public int getTime() {
+        return time;
+    }
 
 	/**
 	 * move theJob to machine for its next task
@@ -82,4 +98,7 @@ class Job {
 	    }
 	}
 
+    public static int getNumTasks(SimulationSpecification specification, int i) {
+        return specification.getJobSpecifications(i).getNumTasks();
+    }
 }
