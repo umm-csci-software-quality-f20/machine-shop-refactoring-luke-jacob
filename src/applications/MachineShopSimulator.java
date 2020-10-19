@@ -17,27 +17,7 @@ public class MachineShopSimulator {
     private Machine[] machines; // array of machines
     private int finishTime; // all machines finish before this
 
-    // methods
-    /**
-     * move theJob to machine for its next task
-     * @return false if no next task
-     */
-    boolean moveToNextMachine(Job theJob, SimulationResults simulationResults) {
-        if (theJob.getTaskQ().isEmpty()) {// the job has no next task; return false
-            simulationResults.setJobCompletionData(theJob.getId(), timeNow, timeNow - theJob.getLength());
-            return false;
-        } else {// theJob has a next task
-            int index = getMachineForNextTask(theJob);
-            theJob.putJobOnMachineQueue(this, index);
-            theJob.setArrivalTime(timeNow);
-            if (eList.nextEventTime(index) == finishTime) {
-                machines[index].changeState(index, eList, timeNow);
-            }
-            return true;
-        }
-    }
-
-    private int getMachineForNextTask(Job theJob) {
+    int getMachineForNextTask(Job theJob) {
         int machineNum = ((Job) theJob.getTaskQ().getFrontElement()).getMachine();
         return machineNum;
     }
@@ -73,11 +53,23 @@ public class MachineShopSimulator {
             theJob.putJobOnMachineQueue(this, firstMachine);
         }
     }
-
+    /**
+     * get task time for setting up jobs
+     * @param specification
+     * @param i
+     * @param j
+     * @return
+     */
     private int getTaskTime(SimulationSpecification specification, int i, int j) {
         return specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+2];
     }
-
+    /**
+     * get machine number for setting up jobs
+     * @param specification
+     * @param i
+     * @param j
+     * @return
+     */
     private int getMachineNumber(SimulationSpecification specification, int i, int j) {
         return specification.getJobSpecifications(i).getSpecificationsForTasks()[2*(j-1)+1];
     }
@@ -113,7 +105,7 @@ public class MachineShopSimulator {
             int nextToFinish = eList.nextEventMachine();
             timeNow = eList.nextEventTime(nextToFinish);
             Job theJob = machines[nextToFinish].changeState(nextToFinish, eList, timeNow);
-            if (theJob != null && !moveToNextMachine(theJob, simulationResults))
+            if (theJob != null && !theJob.moveToNextMachine(this, simulationResults, eList))
                 numJobs--;
         }
     }
@@ -147,7 +139,26 @@ public class MachineShopSimulator {
     public Machine[] getMachineArray() {
         return machines;
     }
-
+    /** Getter method for returning a single machine from the machine array.
+     *  This is working to protect encapsulation of the array.
+     */
+    public Machine getMachine(int p) {
+        return machines[p];
+    }
+    /**
+     * get the current time.
+     * @return timeNow
+     */
+    public int getTimeNow(){
+        return timeNow;
+    }
+    /**
+     * get the large time from the MSS class.
+     * @return
+     */
+    public int getLargeTime(){
+        return finishTime;
+    }
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
         final SpecificationReader specificationReader = new SpecificationReader();
