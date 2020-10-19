@@ -60,10 +60,12 @@ class Job {
      * put the next job on the machine queue.
      * @param machineShopSimulator
      * @param p // the machine to get
+     * @return
      */
 	void putJobOnMachineQueue(MachineShopSimulator machineShopSimulator, int p) {
         Machine machine = machineShopSimulator.getMachine(p);
         machine.getJobQ().put(this);
+    }
 
     public int getMachine() {
         return machine;
@@ -72,11 +74,6 @@ class Job {
     public int getTime() {
         return time;
     }
-
-	void putJobOnMachineQueue(MachineShopSimulator machineShopSimulator, int index) {
-        Machine[] machine = machineShopSimulator.getMachineArray();
-        machine[index].getJobQ().put(this);
-	}
 
 	/**
 	 * move theJob to machine for its next task

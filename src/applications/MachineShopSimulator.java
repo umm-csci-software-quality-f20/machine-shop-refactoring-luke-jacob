@@ -143,7 +143,7 @@ public class MachineShopSimulator {
      *  This is working to protect encapsulation of the array.
      */
     public Machine getMachine(int p) {
-        return machine[p];
+        return machines[p];
     }
     /**
      * get the current time.
@@ -157,7 +157,7 @@ public class MachineShopSimulator {
      * @return
      */
     public int getLargeTime(){
-        return largeTime;
+        return finishTime;
     }
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
