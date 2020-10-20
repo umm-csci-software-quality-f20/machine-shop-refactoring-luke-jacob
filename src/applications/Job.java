@@ -79,7 +79,7 @@ class Job {
 	        int p = machineShopSimulator.getMachineForNextTask(this);
 	        putJobOnMachineQueue(machineShopSimulator, p);
 	        setArrivalTime(machineShopSimulator.getTimeNow());
-	        if (eList.nextEventTime(p) == machineShopSimulator.getLargeTime()) {
+	        if (eList.nextEventTime(p) == Integer.MAX_VALUE) {
 	            machineShopSimulator.getMachine(p).changeState(p, eList, machineShopSimulator.getTimeNow());
 	        }
 	        return true;

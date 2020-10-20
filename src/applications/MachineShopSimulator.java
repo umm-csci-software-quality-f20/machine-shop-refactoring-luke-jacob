@@ -15,7 +15,6 @@ public class MachineShopSimulator {
     private int numJobs; // number of jobs
     private EventList eList; // pointer to event list
     private Machine[] machines; // array of machines
-    private int finishTime; // all machines finish before this
 
     int getMachineForNextTask(Job theJob) {
         int machineNum = ((int)theJob.getTaskMachineQ().getFrontElement());
@@ -75,7 +74,7 @@ public class MachineShopSimulator {
     }
 
     private void createEventAndMachineQueues(SimulationSpecification specification) {
-        eList = new EventList(specification.getNumMachines(), finishTime);
+        eList = new EventList(specification.getNumMachines(), Integer.MAX_VALUE);
         machines = new Machine[specification.getNumMachines() + 1];
         for (int currentMachine = 1; currentMachine <= specification.getNumMachines(); currentMachine++)
             machines[currentMachine] = new Machine();
@@ -126,7 +125,6 @@ public class MachineShopSimulator {
      * @return the results of running the simulation
      */
     public SimulationResults runSimulation(SimulationSpecification specification) {
-        finishTime = Integer.MAX_VALUE;
         timeNow = 0;
         startShop(specification);
         SimulationResults simulationResults = new SimulationResults(numJobs);
@@ -135,30 +133,14 @@ public class MachineShopSimulator {
         return simulationResults;
     }
 
-    /** Getter method for the array of machines that is used in MSS */
-    public Machine[] getMachineArray() {
-        return machines;
-    }
-    /** Getter method for returning a single machine from the machine array.
-     *  This is working to protect encapsulation of the array.
-     */
     public Machine getMachine(int p) {
         return machines[p];
     }
-    /**
-     * get the current time.
-     * @return timeNow
-     */
+
     public int getTimeNow(){
         return timeNow;
     }
-    /**
-     * get the large time from the MSS class.
-     * @return
-     */
-    public int getLargeTime(){
-        return finishTime;
-    }
+
     /** entry point for machine shop simulator */
     public static void main(String[] args) {
         final SpecificationReader specificationReader = new SpecificationReader();
