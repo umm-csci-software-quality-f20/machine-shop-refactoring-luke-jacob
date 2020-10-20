@@ -18,7 +18,7 @@ public class MachineShopSimulator {
     private int finishTime; // all machines finish before this
 
     int getMachineForNextTask(Job theJob) {
-        int machineNum = ((Job) theJob.getTaskQ().getFrontElement()).getMachine();
+        int machineNum = ((int)theJob.getTaskMachineQ().getFrontElement());
         return machineNum;
     }
 

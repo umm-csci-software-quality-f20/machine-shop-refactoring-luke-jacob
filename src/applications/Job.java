@@ -4,7 +4,8 @@ import dataStructures.LinkedQueue;
 
 class Job {
     // data members
-    private LinkedQueue taskQ; // this job's tasks
+    private LinkedQueue taskMachineQ; // this job's machines
+    private LinkedQueue taskTimeQ; // this job's times
     private int length; // sum of scheduled task times
     private int arrivalTime; // arrival time at current queue
     private int id; // job identifier
@@ -14,32 +15,27 @@ class Job {
     // constructor
     Job(int theId) {
         id = theId;
-        taskQ = new LinkedQueue();
-        // length and arrivalTime have default value 0
-    }
-
-    Job(int theMachine, int theTime){
-        machine = theMachine;
-        time = theTime;
+        taskMachineQ = new LinkedQueue();
+        taskTimeQ = new LinkedQueue();
     }
 
     // other methods
     public void addTask(int theMachine, int theTime) {
-        getTaskQ().put(new Job(theMachine, theTime));
+        taskMachineQ.put(theMachine);
+        taskTimeQ.put(theTime);
     }
 
     /**
      * remove next task of job and return its time also update length
      */
     public int removeNextTask() {
-        int theTime = ((Job) getTaskQ().remove()).getTime();
+        int theTime = (int)taskTimeQ.remove();
+        taskMachineQ.remove();
         length = getLength() + theTime;
         return theTime;
     }
 
-    public LinkedQueue getTaskQ() {
-        return taskQ;
-    }
+    public LinkedQueue getTaskMachineQ() { return taskMachineQ; }
 
     public int getLength() {
         return length;
@@ -67,14 +63,6 @@ class Job {
         machine.getJobQ().put(this);
     }
 
-    public int getMachine() {
-        return machine;
-    }
-
-    public int getTime() {
-        return time;
-    }
-
 	/**
 	 * move theJob to machine for its next task
 	 * @param machineShopSimulator
@@ -83,7 +71,7 @@ class Job {
 	 * @return false if no next task, true if has next task.
 	 */
 	boolean moveToNextMachine(MachineShopSimulator machineShopSimulator, SimulationResults simulationResults, EventList eList) {
-	    if (getTaskQ().isEmpty()) {// the job has no next task; return false
+	    if (taskMachineQ.isEmpty()) {// the job has no next task; return false
             simulationResults.setJobCompletionData(getId(), machineShopSimulator.getTimeNow(),
              machineShopSimulator.getTimeNow() - getLength());
 	        return false;
